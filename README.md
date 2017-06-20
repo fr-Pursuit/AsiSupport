@@ -2,9 +2,9 @@ ASI Support for RAGE Plugin Hook
 
 Created by Pursuit
 
-Thanks to MulleDK19 and LMS for RAGE Plugin Hook
-Thanks to Alexander Blade for ScriptHookV
-Thanks to JackD111 for OpenVHook
+Thanks to MulleDK19 and LMS for RAGE Plugin Hook<br />
+Thanks to Alexander Blade for ScriptHookV<br />
+Thanks to JackD111 for OpenVHook<br />
 Thanks to alexguirre for helping me figure out stuff
 
                     GNU GENERAL PUBLIC LICENSE
