@@ -19,7 +19,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c) Pursuit 2017")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
-[assembly:Rage::Attributes::Plugin("ASI Support For RagePluginHook", Description = "Adds support for old ASI mods to RagePluginHook.", Author = "Pursuit")]
+[assembly:Rage::Attributes::Plugin("ASI Support For RAGE Plugin Hook", Description = "Adds support for ASI mods to RAGE Plugin Hook.", Author = "Pursuit")]
 
 //
 // Version information for an assembly consists of the following four values:

@@ -39,7 +39,7 @@ void AsiSupport::EntryPoint::UnloadAsiPlugin(String ^ name)
 
 void AsiSupport::EntryPoint::AsiSupportVersion()
 {
-	Log::Info("AsiSupport for RagePluginHook 0.1.0 BETA - by Pursuit");
+	Log::Info("AsiSupport for RAGE Plugin Hook 0.1.0 BETA - by Pursuit");
 }
 
 /*Disposing the RPH plugin*/
