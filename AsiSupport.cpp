@@ -26,7 +26,12 @@ void AsiSupport::EntryPoint::ListAsiPlugins()
 
 void AsiSupport::EntryPoint::LoadAsiPlugin(String^ name)
 {
-	loader->LoadPlugin(Path::Combine(loader->WorkingDir, name) + ".asi");
+	String^ path = Path::Combine(loader->WorkingDir, name);
+	if(File::Exists(path + ".rasi"))
+		loader->LoadPlugin(path + ".rasi");
+	else if(File::Exists(path + ".asi"))
+		loader->LoadPlugin(path + ".asi");
+	else Log::Error("The plugin \"" + Log::ToUnmanaged(name) + "\" wasn't found");
 }
 
 void AsiSupport::EntryPoint::UnloadAsiPlugin(String ^ name)

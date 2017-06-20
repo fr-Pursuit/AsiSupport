@@ -2,11 +2,11 @@
 
 using namespace std;
 
-PluginImage::PluginImage() {}
+ASIImage::ASIImage() {}
 
-PluginImage::~PluginImage() {}
+ASIImage::~ASIImage() {}
 
-bool PluginImage::Load(const string & path)
+bool ASIImage::Load(const string & path)
 {
 	filePath = path;
 
@@ -29,7 +29,7 @@ bool PluginImage::Load(const string & path)
 	return true;
 }
 
-bool PluginImage::ParseImage()
+bool ASIImage::ParseImage()
 {
 	// Get DOS header
 	const IMAGE_DOS_HEADER * dosHeader = reinterpret_cast<const IMAGE_DOS_HEADER*>(fileBuffer.data());
@@ -46,7 +46,7 @@ bool PluginImage::ParseImage()
 	return true;
 }
 
-uint64_t PluginImage::GetDirectoryAddress(int index)
+uint64_t ASIImage::GetDirectoryAddress(int index)
 {
 
 	const IMAGE_DATA_DIRECTORY * dataDirectory = ntHeader->OptionalHeader.DataDirectory;
@@ -54,7 +54,7 @@ uint64_t PluginImage::GetDirectoryAddress(int index)
 	return RVAToVA(dataDirectory[index].VirtualAddress);
 }
 
-uint64_t PluginImage::RVAToVA(uint32_t rva) const
+uint64_t ASIImage::RVAToVA(uint32_t rva) const
 {
 	const IMAGE_SECTION_HEADER * sectionHeader = reinterpret_cast<const IMAGE_SECTION_HEADER*>(ntHeader + 1);
 	for(int i = 0; i < ntHeader->FileHeader.NumberOfSections; ++i, ++sectionHeader)
@@ -70,7 +70,7 @@ uint64_t PluginImage::RVAToVA(uint32_t rva) const
 	return 0;
 }
 
-bool PluginImage::IsCompatible()
+bool ASIImage::IsCompatible()
 {
 	auto * importTable = reinterpret_cast<PIMAGE_IMPORT_DESCRIPTOR>(GetDirectoryAddress(IMAGE_DIRECTORY_ENTRY_IMPORT));
 	for(; importTable->Name; ++importTable)
@@ -86,7 +86,7 @@ bool PluginImage::IsCompatible()
 	return true;
 }
 
-bool PluginImage::PatchCompatibility()
+bool ASIImage::CreateRASI()
 {
 	Log::Info("Patching compatibility...");
 	// Find ScriptHooKV import descriptor
@@ -97,9 +97,15 @@ bool PluginImage::PatchCompatibility()
 
 		if(strcmp(dllName, "ScriptHookV.dll") == 0)
 		{
-			// Found it, patch that shit
+			// Found it, patch it
 			ZeroMemory(dllName, strlen(dllName));
 			strcpy(dllName, "AsiSupport.dll");
+
+			String^ oldFile = gcnew String(filePath.c_str());
+			String^ newFile = oldFile->Replace(".asi", ".rasi");
+			File::Copy(oldFile, newFile);
+
+			filePath = Log::ToUnmanaged(newFile);
 
 			// Overwrite original file with changes
 			ofstream file(filePath, std::ios::binary | std::ios::out);

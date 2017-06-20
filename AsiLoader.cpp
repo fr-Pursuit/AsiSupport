@@ -13,20 +13,29 @@ void AsiSupport::AsiLoader::Initialize()
 {
 	Log::Info("Loading ASI plugins");
 
-	for each(String^ file in Directory::EnumerateFiles(this->WorkingDir, "*.asi"))
+	for each(String^ file in Directory::EnumerateFiles(this->WorkingDir, "*.rasi"))
 	{
 		LoadPlugin(file);
 		Rage::GameFiber::Sleep(0);
 	}
 
+	for each(String^ file in Directory::EnumerateFiles(this->WorkingDir, "*.asi"))
+	{
+		if(!File::Exists(Path::GetFileNameWithoutExtension(file) + ".rasi"))
+		{
+			LoadPlugin(file);
+			Rage::GameFiber::Sleep(0);
+		}
+	}
+
 	Log::Info("Finished loading ASI plugins");
 }
 
-bool AsiSupport::AsiLoader::IsLoaded(String^ path)
+bool AsiSupport::AsiLoader::IsLoaded(String^ name)
 {
 	for each(Plugin^ plugin in this->LoadedPlugins)
 	{
-		if(plugin->FileName->Equals(path))
+		if(Path::GetFileNameWithoutExtension(plugin->FileName)->Equals(name))
 			return true;
 	}
 
@@ -38,44 +47,49 @@ void AsiSupport::AsiLoader::LoadPlugin(String^ path)
 	this->Loading = true;
 	const string name = Log::ToUnmanaged(Path::GetFileNameWithoutExtension(path));
 
-	if(this->IsLoaded(path))
-		Log::Info("Plugin " + name + " already loaded.");
+	if(this->IsLoaded(Path::GetFileNameWithoutExtension(path)))
+		Log::Info("Plugin \"" + name + "\" already loaded.");
 	else
 	{
-		const string pluginPath = Log::ToUnmanaged(path);
+		string pluginPath = Log::ToUnmanaged(path);
 
 		Log::Info("Loading \"" + name + '"');
 
-		PluginImage pluginImage;
-
-		if(!pluginImage.Load(pluginPath))
+		if(path->EndsWith(".asi"))
 		{
-			Log::Error("Unable to load \"" + name + "\" image.");
-			this->Loading = false;
-			return;
-		}
+			Log::Info("Regular ASI detected. Checking compatibility...");
 
-		Rage::GameFiber::Sleep(0);
+			ASIImage pluginImage;
 
-		if(!pluginImage.IsCompatible())
-		{
-			Log::Info("Detected ScriptHookV image. Patching it...");
-
-			if(pluginImage.PatchCompatibility())
+			if(!pluginImage.Load(pluginPath))
 			{
-				Log::Info("Successfully patched \"" + name + '"');
-			}
-			else
-			{
-				Log::Error("Failed to patch \"" + name + '"');
+				Log::Error("Unable to load \"" + name + "\" image.");
 				this->Loading = false;
 				return;
 			}
+
+			Rage::GameFiber::Sleep(0);
+
+			if(!pluginImage.IsCompatible())
+			{
+				Log::Info("Detected ScriptHookV ASI. Creating Rage ASI version...");
+
+				if(pluginImage.CreateRASI())
+				{
+					path = path->Replace(".asi", ".rasi");
+					pluginPath = Log::ToUnmanaged(path);
+					Log::Info("Successfully patched \"" + name + '"');
+				}
+				else
+				{
+					Log::Error("Failed to create Rage ASI version of plugin \"" + name + '"');
+					this->Loading = false;
+					return;
+				}
+			}
+
+			Rage::GameFiber::Sleep(0);
 		}
-
-		Rage::GameFiber::Sleep(0);
-
-		//At this point the plugin should be compatible
 
 		Plugin^ currentPlugin = gcnew Plugin(pluginPath);
 		this->LoadedPlugins->Add(currentPlugin);

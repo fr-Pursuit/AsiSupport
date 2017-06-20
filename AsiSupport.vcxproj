@@ -132,6 +132,7 @@
       <HintPath>..\..\..\CSharp\Tools\GTAV\DummyRagePluginHook\bin\Debug\RagePluginHook.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
@@ -142,7 +143,7 @@
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Plugin.h" />
-    <ClInclude Include="PluginImage.h" />
+    <ClInclude Include="ASIImage.h" />
     <ClInclude Include="PluginThread.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="TexturesManager.h" />
@@ -156,7 +157,7 @@
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Plugin.cpp" />
-    <ClCompile Include="PluginImage.cpp" />
+    <ClCompile Include="ASIImage.cpp" />
     <ClCompile Include="PluginThread.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

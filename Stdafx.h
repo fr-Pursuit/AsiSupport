@@ -25,6 +25,6 @@ typedef void(*KeyboardHandler)(DWORD, WORD, BYTE, BOOL, BOOL, BOOL, BOOL);
 #include "TexturesManager.h"
 #include "PluginThread.h"
 #include "Plugin.h"
-#include "PluginImage.h"
+#include "ASIImage.h"
 #include "AsiLoader.h"
 #include "Vector3Natives.h"

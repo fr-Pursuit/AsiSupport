@@ -17,11 +17,11 @@ namespace AsiSupport
 	public ref class Vector3Natives
 	{
 		public:
-		static property List<System::UInt64>^ Vector3NativesList;
+		static property HashSet<System::UInt64>^ Vector3NativesList;
 
 		static void Initialize()
 		{
-			Vector3NativesList = gcnew List<System::UInt64>();
+			Vector3NativesList = gcnew HashSet<System::UInt64>();
 			Vector3NativesList->Add(0x0C92BA89F1AF26F8);
 			Vector3NativesList->Add(0xE465D4AB7CA6AE72);
 			Vector3NativesList->Add(0x3FEF770D40960D5A);

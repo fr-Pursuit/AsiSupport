@@ -3,18 +3,18 @@
 typedef const IMAGE_NT_HEADERS64 NT64H;
 typedef std::vector<char> bufferVec;
 
-class PluginImage
+class ASIImage
 {
 	public:
 
-	PluginImage();
-	~PluginImage();
+	ASIImage();
+	~ASIImage();
 
 	bool			Load(const std::string & path);
 
 	bool			IsCompatible();
 
-	bool			PatchCompatibility();
+	bool			CreateRASI();
 
 	private:
 
