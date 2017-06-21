@@ -17,11 +17,11 @@ void AsiSupport::PluginThread::Start()
 {
 	if(this->start != nullptr && this->Fiber == nullptr)
 		this->Fiber = Rage::GameFiber::StartNew(gcnew ThreadStart(this, &PluginThread::RunFiber), this->Name);
-	else Log::Warn("Unable to start PluginThread " + Log::ToUnmanaged(this->Name));
+	else Log::Warn("Unable to start PluginThread " + Util::ToUnmanaged(this->Name));
 }
 
 void AsiSupport::PluginThread::RunFiber()
 {
-	Log::Info("Starting new GameFiber " + Log::ToUnmanaged(this->Name));
+	Log::Info("Starting new GameFiber " + Util::ToUnmanaged(this->Name));
 	this->start->Invoke();
 }

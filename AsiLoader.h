@@ -10,6 +10,7 @@ namespace AsiSupport
 		property String^ WorkingDir;
 		property bool Loading;
 		property List<Plugin^>^ LoadedPlugins;
+		property AsiSupport::IntegrityMap^ IntegrityMap;
 
 		AsiLoader(String^ workingDir);
 

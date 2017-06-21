@@ -21,17 +21,20 @@ void AsiSupport::EntryPoint::ListAsiPlugins()
 	Log::DisplayLine("___Loaded ASI plugins list___");
 
 	for(int i = 0; i < loader->LoadedPlugins->Count; i++)
-		Log::DisplayLine(Log::ToUnmanaged(Path::GetFileNameWithoutExtension(loader->LoadedPlugins[i]->FileName)));
+		Log::DisplayLine(Util::ToUnmanaged(Path::GetFileNameWithoutExtension(loader->LoadedPlugins[i]->FileName)));
 }
 
 void AsiSupport::EntryPoint::LoadAsiPlugin(String^ name)
 {
 	String^ path = Path::Combine(loader->WorkingDir, name);
 	if(File::Exists(path + ".rasi"))
+	{
 		loader->LoadPlugin(path + ".rasi");
+		loader->IntegrityMap->Save();
+	}
 	else if(File::Exists(path + ".asi"))
 		loader->LoadPlugin(path + ".asi");
-	else Log::Error("The plugin \"" + Log::ToUnmanaged(name) + "\" wasn't found");
+	else Log::Error("The plugin \"" + Util::ToUnmanaged(name) + "\" wasn't found");
 }
 
 void AsiSupport::EntryPoint::UnloadAsiPlugin(String ^ name)
@@ -44,7 +47,7 @@ void AsiSupport::EntryPoint::UnloadAsiPlugin(String ^ name)
 
 void AsiSupport::EntryPoint::AsiSupportVersion()
 {
-	Log::Info("AsiSupport for RAGE Plugin Hook 0.1.0 BETA - by Pursuit");
+	Log::Info("AsiSupport for RAGE Plugin Hook 0.2.0 BETA PR2 - by Pursuit");
 }
 
 /*Disposing the RPH plugin*/

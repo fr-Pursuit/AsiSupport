@@ -88,7 +88,6 @@ bool ASIImage::IsCompatible()
 
 bool ASIImage::CreateRASI()
 {
-	Log::Info("Patching compatibility...");
 	// Find ScriptHooKV import descriptor
 	auto * importTable = reinterpret_cast<PIMAGE_IMPORT_DESCRIPTOR>(GetDirectoryAddress(IMAGE_DIRECTORY_ENTRY_IMPORT));
 	for(; importTable->Name; ++importTable)
@@ -105,7 +104,7 @@ bool ASIImage::CreateRASI()
 			String^ newFile = oldFile->Replace(".asi", ".rasi");
 			File::Copy(oldFile, newFile);
 
-			filePath = Log::ToUnmanaged(newFile);
+			filePath = Util::ToUnmanaged(newFile);
 
 			// Overwrite original file with changes
 			ofstream file(filePath, std::ios::binary | std::ios::out);

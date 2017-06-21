@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{54f99a80-0e51-4637-ac9c-b18ac408d845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugins">
+      <UniqueIdentifier>{da39f7bf-0adb-49b5-a942-836f8c9cae30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Plugins">
+      <UniqueIdentifier>{e5b12654-ca7d-43b5-9576-d8246b6dfcbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{aedb5d93-9b03-4e6a-8c68-4b4a1e8a7799}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsiSupport.h">
@@ -24,16 +36,7 @@
     <ClInclude Include="AsiLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Plugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="KeyboardManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PluginThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector3Natives.h">
@@ -42,8 +45,26 @@
     <ClInclude Include="TexturesManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ASIImage.h">
+    <ClInclude Include="IntegrityMap.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASIImage.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginThread.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PickupLister.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,29 +77,38 @@
     <ClCompile Include="Stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AsiLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Interop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Plugin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KeyboardManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PluginThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TexturesManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ASIImage.cpp">
+    <ClCompile Include="IntegrityMap.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginThread.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="ASIImage.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="PickupLister.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

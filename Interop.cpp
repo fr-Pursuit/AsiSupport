@@ -7,10 +7,10 @@ using namespace System::Runtime::InteropServices;
 using namespace System::Threading;
 using namespace Rage::Native;
 
-static uint64_t nativeHash;
-static uint64_t arguments[25];
+static UINT64 nativeHash;
+static UINT64 arguments[25];
 static int argumentsIndex = 0;
-static uint64_t returnedValue;
+static UINT64 returnedValue;
 
 /* textures */
 
@@ -116,18 +116,18 @@ DLL_EXPORT void scriptUnregister(HMODULE module) {} //Not supported
 
 DLL_EXPORT void scriptUnregister(void(*LP_SCRIPT_MAIN)()) {}// deprecated
 
-DLL_EXPORT void nativeInit(uint64_t hash)
+DLL_EXPORT void nativeInit(UINT64 hash)
 {
 	nativeHash = hash;
 }
 
-DLL_EXPORT void nativePush64(uint64_t val)
+DLL_EXPORT void nativePush64(UINT64 val)
 {
 	arguments[argumentsIndex] = val;
 	argumentsIndex++;
 }
 
-DLL_EXPORT uint64_t* nativeCall()
+DLL_EXPORT PUINT64 nativeCall()
 {
 	cli::array<NativeArgument^>^ args = gcnew cli::array<NativeArgument^>(argumentsIndex);
 
@@ -144,10 +144,10 @@ DLL_EXPORT uint64_t* nativeCall()
 		vec.x = rageVector.X;
 		vec.y = rageVector.Y;
 		vec.z = rageVector.Z;
-		return reinterpret_cast<uint64_t*>(&vec);
+		return reinterpret_cast<PUINT64>(&vec);
 	}
 	else
-		returnedValue = (uint64_t)NativeFunction::Call(nativeHash, System::UInt64::typeid, args);
+		returnedValue = (UINT64)NativeFunction::Call(nativeHash, System::UInt64::typeid, args);
 
 	return &returnedValue;
 }
@@ -213,10 +213,23 @@ DLL_EXPORT int worldGetAllObjects(int *arrPointer, int arrSize)
 	return count;
 }
 
-DLL_EXPORT int worldGetAllPickups(int *arrPointer, int arrSize) //Not implemented
+/*Thanks to alexguirre and SHVDN for this !*/
+DLL_EXPORT int worldGetAllPickups(int *arrPointer, int arrSize)
 {
-	//TODO implement
-	return 0;
+	int count = 0;
+
+	List<Rage::PoolHandle>^ pickupList = PickupLister::GetAllPickupHandles();
+
+	for each(Rage::PoolHandle pickup in pickupList)
+	{
+		if(count == arrSize)
+			break;
+
+		arrPointer[count] = (int)pickup.Value;
+		count++;
+	}
+
+	return count;
 }
 
 /* misc */

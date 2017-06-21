@@ -7,6 +7,7 @@ AsiSupport::AsiLoader::AsiLoader(String^ workingDir)
 	this->WorkingDir = workingDir;
 	this->Loading = false;
 	this->LoadedPlugins = gcnew List<Plugin^>();
+	this->IntegrityMap = gcnew AsiSupport::IntegrityMap();
 }
 
 void AsiSupport::AsiLoader::Initialize()
@@ -28,6 +29,7 @@ void AsiSupport::AsiLoader::Initialize()
 		}
 	}
 
+	this->IntegrityMap->Save();
 	Log::Info("Finished loading ASI plugins");
 }
 
@@ -45,15 +47,36 @@ bool AsiSupport::AsiLoader::IsLoaded(String^ name)
 void AsiSupport::AsiLoader::LoadPlugin(String^ path)
 {
 	this->Loading = true;
-	const string name = Log::ToUnmanaged(Path::GetFileNameWithoutExtension(path));
+	String^ managedName = Path::GetFileNameWithoutExtension(path);
+	const string name = Util::ToUnmanaged(managedName);
 
-	if(this->IsLoaded(Path::GetFileNameWithoutExtension(path)))
+	if(this->IsLoaded(managedName))
 		Log::Info("Plugin \"" + name + "\" already loaded.");
+	else if(name == "OpenIV")
+		Log::Info("Skipping \"OpenIV\" as it is a stand-alone plugin.");
 	else
 	{
-		string pluginPath = Log::ToUnmanaged(path);
+		string pluginPath = Util::ToUnmanaged(path);
 
 		Log::Info("Loading \"" + name + '"');
+
+		//In case ScriptHookV is here and has loaded the ASI already
+		Rage::Game::TerminateAllScriptsWithName(managedName->ToLower() + ".asi");
+
+		if(path->EndsWith(".rasi") && File::Exists(path->Replace(".rasi", ".asi")))
+		{
+			String^ hash = Util::GetFileChecksum(path->Replace(".rasi", ".asi"));
+			String^ oldHash = this->IntegrityMap->GetEntry(managedName);
+
+			if(oldHash == nullptr || hash != oldHash)
+			{
+				Log::Info("Updating \"" + name + '"');
+				File::Delete(path);
+
+				path = path->Replace(".rasi", ".asi");
+				pluginPath = Util::ToUnmanaged(path);
+			}
+		}
 
 		if(path->EndsWith(".asi"))
 		{
@@ -76,8 +99,9 @@ void AsiSupport::AsiLoader::LoadPlugin(String^ path)
 
 				if(pluginImage.CreateRASI())
 				{
+					this->IntegrityMap->SetEntry(gcnew String(name.c_str()), Util::GetFileChecksum(path));
 					path = path->Replace(".asi", ".rasi");
-					pluginPath = Log::ToUnmanaged(path);
+					pluginPath = Util::ToUnmanaged(path);
 					Log::Info("Successfully patched \"" + name + '"');
 				}
 				else
@@ -141,21 +165,24 @@ AsiSupport::Plugin^ AsiSupport::AsiLoader::GetPlugin(HMODULE pluginModule)
 
 void AsiSupport::AsiLoader::UnloadPlugin(Plugin^ plugin)
 {
-	string name = Log::ToUnmanaged(Path::GetFileNameWithoutExtension(plugin->FileName));
+	string name = Util::ToUnmanaged(Path::GetFileNameWithoutExtension(plugin->FileName));
 
 	Log::Info("Unloading \"" + name +'"');
 
 	for each(PluginThread^ thread in plugin->ScriptThreads)
 		thread->Fiber->Abort();
 
-	string fileName = Log::ToUnmanaged(plugin->FileName);
+	string fileName = Util::ToUnmanaged(plugin->FileName);
 
 	this->LoadedPlugins->Remove(plugin);
 
-	if(FreeLibrary(GetModuleHandleA(fileName.c_str())))
+	Log::Info("You will have to reboot your game for the plugin to work again.");
+
+	// \/ this is causing a crash...
+	/*if(FreeLibrary(GetModuleHandleA(fileName.c_str())))
 		Log::Info("Plugin \"" + name + "\" unloaded successfully.");
 	else
-		Log::Info("Unable to unload plugin \"" + name + "\" (error code " + to_string(GetLastError()) + ")");
+		Log::Info("Unable to unload plugin \"" + name + "\" (error code " + to_string(GetLastError()) + ")");*/
 }
 
 void AsiSupport::AsiLoader::UnloadAllPlugins()

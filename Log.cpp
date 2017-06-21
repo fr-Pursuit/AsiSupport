@@ -22,8 +22,3 @@ void Log::DisplayLine(string message)
 {
 	Game::LogTrivial(gcnew System::String(message.c_str()));
 }
-
-string Log::ToUnmanaged(String^ message)
-{
-	return msclr::interop::marshal_as<std::string>(message);
-}

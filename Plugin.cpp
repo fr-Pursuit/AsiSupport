@@ -8,5 +8,5 @@ AsiSupport::Plugin::Plugin(string fileName)
 
 HMODULE AsiSupport::Plugin::GetModule()
 {
-	return GetModuleHandleA(Log::ToUnmanaged(this->FileName).c_str());
+	return GetModuleHandleA(Util::ToUnmanaged(this->FileName).c_str());
 }

@@ -1,0 +1,8 @@
+__0.2.0__
+* If a script is already loaded with SHV, the SHV script will be killed
+* The dependency issue is now fixed
+* OpenIV.asi is no longer handled as it is stand-alone and will work anyway
+* If the original .asi file changes, the converted .rasi file is updated
+
+__0.1.0__
++ Initial public release

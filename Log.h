@@ -11,6 +11,4 @@ namespace Log
 	void Error(string message);
 
 	void DisplayLine(string message);
-
-	string ToUnmanaged(String^ message);
 };
