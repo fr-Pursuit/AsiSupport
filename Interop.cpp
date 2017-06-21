@@ -277,5 +277,7 @@ enum eGameVersion : int
 
 DLL_EXPORT eGameVersion getGameVersion()
 {
-	return VER_1_0_617_1_NOSTEAM; //TODO check if steam
+	if(File::Exists(Path::Combine(AsiSupport::AsiLoader::instance->WorkingDir, "steam_api64.dll")))
+		return VER_1_0_617_1_STEAM;
+	else return VER_1_0_617_1_NOSTEAM;
 }

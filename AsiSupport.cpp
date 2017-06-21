@@ -8,11 +8,28 @@ using namespace System::Reflection;
 /*Entry point for the RPH plugin*/
 void AsiSupport::EntryPoint::Main()
 {
+	bool loading = false;
+
+	if(Rage::Game::IsLoading) //Do not load plugins on game load, it will cause a crash
+	{
+		loading = true;
+
+		while(Rage::Game::IsLoading)
+			Rage::GameFiber::Wait(0);
+
+		Rage::Game::FadeScreenOut(0);
+		Rage::GameFiber::Wait(1000);
+	}
+
 	Vector3Natives::Initialize();
 	KeyboardManager::Initialize();
 	TexturesManager::Initialize();
 	loader = gcnew AsiLoader(Directory::GetParent(Path::GetFullPath("child"))->FullName);
 	loader->Initialize();
+
+	if(loading)
+		Rage::Game::FadeScreenIn(1000);
+
 	Rage::GameFiber::Hibernate();
 }
 

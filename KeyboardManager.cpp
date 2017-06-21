@@ -1,5 +1,8 @@
 #include "Stdafx.h"
 
+#pragma unmanaged
+#pragma comment(lib, "user32.lib")
+
 WNDPROC AsiSupport::KeyboardManager::oWndProc;
 list<KeyboardHandler> AsiSupport::KeyboardManager::Handlers;
 

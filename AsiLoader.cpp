@@ -102,7 +102,7 @@ void AsiSupport::AsiLoader::LoadPlugin(String^ path)
 					this->IntegrityMap->SetEntry(gcnew String(name.c_str()), Util::GetFileChecksum(path));
 					path = path->Replace(".asi", ".rasi");
 					pluginPath = Util::ToUnmanaged(path);
-					Log::Info("Successfully patched \"" + name + '"');
+					Log::Info("Successfully created RASI version of \"" + name + '"');
 				}
 				else
 				{
@@ -129,7 +129,7 @@ void AsiSupport::AsiLoader::LoadPlugin(String^ path)
 		else
 		{
 			this->LoadedPlugins->Remove(currentPlugin);
-			Log::Error("Unable to load \"" + name + "\" (error code " + to_string(GetLastError()) + ")");
+			Log::Error("Unable to load \"" + name + "\" (error code " + to_string(GetLastError()) + "), try rebooting your game.");
 		}
 	}
 
