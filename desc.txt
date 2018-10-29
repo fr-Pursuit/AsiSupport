@@ -1,0 +1,39 @@
+This is a RPH plugin that converts ASI mods into UASI ("Universal ASI") mods which can be loaded with RAGE Plugin Hook in the same way ASI mods are loaded with ScriptHookV. Everything but the raw DirectX access has been implemented, so most ASIs should load and work properly.
+
+<b>To use this plugin, you must have:</b>
+<a href="https://www.microsoft.com/en-us/download/details.aspx?id=48130">.NET Framework 4.6</a>
+<a href="http://ragepluginhook.net/">RAGE Plugin Hook</a>
+
+<b>How does it work?</b>
+The first version was entirely coded in C++/CLI: native C++ code was used to interact with native ASI plugins, and the "CLI" (or "managed") part of the code was used to interact with the .NET Framework and RAGE Plugin Hook. Though, this mix between managed and native code created problems and confusion: errors were hard to track down, the program was hard to maintain, and the plugin didn't work for a lot of people.
+This version was created with compatibility and user-friendliness in mind: managed code is in its own file ("AsiSupport.dll", which is the RPH Plugin), and all unmanaged code (the bare minimum the make the plugin work) is in UnvAsiIntrf.dll (which stands for "Universal ASI Interface"). UnvAsiIntrf.dll should be supported by the end user as it is pure C++, and AsiSupport.dll should also not cause any problem if the end user has all required dependencies to use RPH.
+UnvAsiIntrf.dll has been created as a generic way for ASI plugins to interact with another entity: said entity would register as an "API Handler" which has access to GTA V (in this instance, to RPH which gives it access to GTA V) and which would load UASI files (converted ASI files); then, the ASI scripts would interact with GTA V the same way the would've done it with ScriptHookV, except they would do via UnvAsiIntrf.dll, which itself serves as a simple bridge between UASI scripts and the API Handler.
+
+<b>0.3.0</b>
+* The AsiSupport plugin has been rewritten in C# to remove the C++/CLI dependency
+* The interop with ASI scripts is now done via UnvAsiIntrf.dll (coded in pure C++)
+* AsiSupport no longer uses .rasi files: it uses .uasi (Universal ASI) files
+* Converting ASI files to UASI should now be faster
+* Key events are no longer being transferred to ASI plugins when the RPH console is open
+* Better handling of exceptions: the plugin should no longer crash (most of the times), but instead show a user friendly error message
+* Most ASI plugins can now be unloaded and reloaded without rebooting the game (sorry, ELS is not one of them)
+* Some previously hardcoded values are now read in an external, easily editable file
+
+<b>0.2.0</b>
+* If a script is already loaded with SHV, the SHV script will be killed
+* The dependency issue is now fixed
+* The plugin should now also work on Windows 7, 8, and 8.1
+* OpenIV.asi is no longer handled as it is stand-alone and will work anyway
+* If the original .asi file changes, the converted .rasi file is updated
+
+<b>0.1.0</b>
++ Initial public release
+
+<b>Please note I only created it to be able to use old ASI plugins created by inactive authors. If you're a new developer wanting to create a GTA V plugin, I highly recommend you directly use RPH instead, as it will improve performance.</b>
+
+Thanks to MulleDK19 and LMS for RAGE Plugin Hook
+Thanks to Alexander Blade for ScriptHookV
+Thanks to JackD111 for OpenVHook
+Thanks to alexguirre for helping me figure out stuff
+
+The source is available on <a href="https://github.com/fr-Pursuit/AsiSupport">Github</a> under the GPLv2 license.

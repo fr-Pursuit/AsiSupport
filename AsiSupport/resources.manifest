@@ -1,0 +1,5 @@
+﻿#AsiSupport resource manifest
+
+resource:Exceptions.manifest
+resource:Vector3Natives.manifest
+resource:Versions.manifest

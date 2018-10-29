@@ -1,0 +1,19 @@
+__0.3.0__
+* The AsiSupport plugin has been rewritten in C# to remove the C++/CLI dependency
+* The interop with ASI scripts is now done via UnvAsiIntrf.dll (coded in pure C++)
+* AsiSupport no longer uses .rasi files: it uses .uasi (Universal ASI) files
+* Converting ASI files to UASI should now be faster
+* Key events are no longer being transferred to ASI plugins when the RPH console is open
+* Better handling of exceptions: the plugin should no longer crash (most of the times), but instead show a user friendly error message
+* Most ASI plugins can now be unloaded and reloaded without rebooting the game (sorry, ELS is not one of them)
+* Some previously hardcoded values are now read in an external, easily editable file
+
+__0.2.0__
+* If a script is already loaded with SHV, the SHV script will be killed
+* The dependency issue is now fixed
+* The plugin should now also work on Windows 7, 8, and 8.1
+* OpenIV.asi is no longer handled as it is stand-alone and will work anyway
+* If the original .asi file changes, the converted .rasi file is updated
+
+__0.1.0__
++ Initial public release
