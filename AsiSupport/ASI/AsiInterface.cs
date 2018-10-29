@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using AsiSupport.Managers;
 using PursuitLib;
 using Rage;
@@ -96,6 +97,12 @@ namespace AsiSupport.ASI
 				Marshal.FreeHGlobal(returnedValue);
 
 			returnedValue = IntPtr.Zero;
+		}
+
+		public static void FillCrashReport(StringBuilder report)
+		{
+			report.Append("ReturnedValuePtr: " + returnedValue.ToString("X") + '\n');
+			report.Append("Last native called: " + nativeHash.ToString("X") + '\n');
 		}
 
 		/* textures */

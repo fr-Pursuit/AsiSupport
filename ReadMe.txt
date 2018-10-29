@@ -21,7 +21,12 @@ II) How does it work?
 	and which would load UASI files; then, the ASI scripts would interact with GTA V the same way the would've done it with ScriptHookV, except they would do via UnvAsiIntrf.dll, which itself serves as a simple bridge between
 	UASI scripts and the API Handler.
 
-III) Credits
+III) Reporting bugs and crashes
+	
+	As the plugin is still in beta and might be unstable, you may experience bugs and / or crashes. In that case, please report the bug/crash either on Github (https://github.com/fr-Pursuit/AsiSupport/issues),
+	in the GTA5-mods.com comment section, or on the RPH Discord (https://discord.gg/0v9TP1BOmfwZms7y). If you're reporting a crash, please also send the crash report (located inside the "CrashReports" directory in your GTA V folder).
+
+IV) Credits
 
 	ASI Support for RAGE Plugin Hook
 	Created by Pursuit
@@ -30,7 +35,7 @@ III) Credits
 	Thanks to Alexander Blade for ScriptHookV
 	Thanks to alexguirre for helping me figure out stuff
 
-IV) License
+V) License
 	
 	ASI Support for RAGE Plugin Hook
 	Copyright © 2018 Pursuit

@@ -9,6 +9,11 @@ The first version was entirely coded in C++/CLI: native C++ code was used to int
 This version was created with compatibility and user-friendliness in mind: managed code is in its own file ("AsiSupport.dll", which is the RPH Plugin), and all unmanaged code (the bare minimum the make the plugin work) is in UnvAsiIntrf.dll (which stands for "Universal ASI Interface"). UnvAsiIntrf.dll should be supported by the end user as it is pure C++, and AsiSupport.dll should also not cause any problem if the end user has all required dependencies to use RPH.
 UnvAsiIntrf.dll has been created as a generic way for ASI plugins to interact with another entity: said entity would register as an "API Handler" which has access to GTA V (in this instance, to RPH which gives it access to GTA V) and which would load UASI files (converted ASI files); then, the ASI scripts would interact with GTA V the same way the would've done it with ScriptHookV, except they would do via UnvAsiIntrf.dll, which itself serves as a simple bridge between UASI scripts and the API Handler.
 
+<b>Reporting bugs and crashes</b>
+As the plugin is still in beta and might be unstable, you may experience bugs and / or crashes. In that case, please report the bug/crash either on <a href="https://github.com/fr-Pursuit/AsiSupport/issues">Github</a>, in the GTA5-mods.com comment section, or on the <a href="https://discord.gg/0v9TP1BOmfwZms7y">RPH Discord</a>. If you're reporting a crash, please also send the crash report (located inside the "CrashReports" directory in your GTA V folder).
+
+<b>Changelog:</b>
+
 <b>0.3.0</b>
 * The AsiSupport plugin has been rewritten in C# to remove the C++/CLI dependency
 * The interop with ASI scripts is now done via UnvAsiIntrf.dll (coded in pure C++)
@@ -36,4 +41,4 @@ Thanks to Alexander Blade for ScriptHookV
 Thanks to JackD111 for OpenVHook
 Thanks to alexguirre for helping me figure out stuff
 
-The source is available on <a href="https://github.com/fr-Pursuit/AsiSupport">Github</a> under the GPLv2 license.
+The source is available on <a href="https://github.com/fr-Pursuit/AsiSupport">Github</a> under the GPLv3 license.

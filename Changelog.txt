@@ -7,6 +7,7 @@ __0.3.0__
 * Better handling of exceptions: the plugin should no longer crash (most of the times), but instead show a user friendly error message
 * Most ASI plugins can now be unloaded and reloaded without rebooting the game (sorry, ELS is not one of them)
 * Some previously hardcoded values are now read in an external, easily editable file
+* The crash reporting system has been improved
 
 __0.2.0__
 * If a script is already loaded with SHV, the SHV script will be killed

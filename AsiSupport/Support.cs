@@ -24,7 +24,7 @@ namespace AsiSupport
 		public AsiLoader Loader { get; private set; }
 		public TextureManager TextureManager { get; private set; }
 		public KeyboardManager KeyboardManager { get; private set; }
-		private bool intialized = false;
+		private bool initialized = false;
 
 		public Support()
 		{
@@ -37,7 +37,7 @@ namespace AsiSupport
 
 		protected override void Tick()
 		{
-			if(!Game.IsLoading && !this.intialized) //Do not load plugins while the game is loading, it will cause a crash
+			if(!Game.IsLoading && !this.initialized) //Do not load plugins while the game is loading, it will cause a crash
 				this.Initialize();
 		}
 
@@ -84,7 +84,29 @@ namespace AsiSupport
 				this.Loader.LoadAllPlugins();
 
 			Game.FadeScreenIn(1000);
-			this.intialized = true;
+			this.initialized = true;
+		}
+
+		protected override void FillCrashReport(Exception exception, StringBuilder report)
+		{
+			base.FillCrashReport(exception, report);
+
+			report.Append("-- AsiSupport state --\n");
+			report.Append("Initialized: " + this.initialized + '\n');
+			AsiInterface.FillCrashReport(report);
+
+			if(this.Loader != null)
+			{
+				report.Append("\n-- Loaded plugins --\n");
+
+				if(this.Loader.LoadedPlugins.Count == 0)
+					report.Append("*None*\n");
+				else
+				{
+					foreach(AsiPlugin plugin in this.Loader.LoadedPlugins)
+						report.Append(plugin.Name + " (" + plugin.UASIPath + ") - " + plugin.Type + " - loaded at " + plugin.Module.ToString("X") + '\n');
+				}
+			}
 		}
 
 		public override void Unload(bool canSleep)
