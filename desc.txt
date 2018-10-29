@@ -41,4 +41,4 @@ Thanks to Alexander Blade for ScriptHookV
 Thanks to JackD111 for OpenVHook
 Thanks to alexguirre for helping me figure out stuff
 
-The source is available on <a href="https://github.com/fr-Pursuit/AsiSupport">Github</a> under the GPLv2 license.
+The source is available on <a href="https://github.com/fr-Pursuit/AsiSupport">Github</a> under the GPLv3 license.
