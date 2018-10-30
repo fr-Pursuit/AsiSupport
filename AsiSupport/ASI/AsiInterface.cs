@@ -228,8 +228,7 @@ namespace AsiSupport.ASI
 
 			argumentsIndex = 0;
 
-			NativeRetVal retVal = (NativeRetVal)NativeFunction.Call(nativeHash, typeof(NativeRetVal), args);
-			*(NativeRetVal*)returnedValue = retVal;
+			*(NativeRetVal*)returnedValue = (NativeRetVal)NativeFunction.Call(nativeHash, typeof(NativeRetVal), args);
 
 			return returnedValue;
 		}
