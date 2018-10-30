@@ -66,7 +66,7 @@ namespace AsiSupport.ASI
 		public static void Initialize()
 		{
 			arguments = new ulong[25];
-			returnedValue = Marshal.AllocHGlobal(24);
+			returnedValue = Marshal.AllocHGlobal(sizeof(NativeRetVal));
 
 			RegisterHandler(Marshal.GetFunctionPointerForDelegate(createTexture),
 							Marshal.GetFunctionPointerForDelegate(drawTexture),
@@ -101,7 +101,7 @@ namespace AsiSupport.ASI
 
 		public static void FillCrashReport(StringBuilder report)
 		{
-			report.Append("ReturnedValuePtr: " + returnedValue.ToString("X") + '\n');
+			report.Append("Pointer to RetVal: " + ((ulong)returnedValue).ToString("X") + '\n');
 			report.Append("Last native called: " + nativeHash.ToString("X") + '\n');
 		}
 
@@ -228,15 +228,8 @@ namespace AsiSupport.ASI
 
 			argumentsIndex = 0;
 
-			if(VectorHelper.NativesList.Contains(nativeHash))
-			{
-				VectorHelper.NativeVector3* vec = (VectorHelper.NativeVector3*)returnedValue.ToPointer();
-				Vector3 rageVector = (Vector3)NativeFunction.Call(nativeHash, typeof(Vector3), args);
-				vec->x = rageVector.X;
-				vec->y = rageVector.Y;
-				vec->z = rageVector.Z;
-			}
-			else *(ulong*)returnedValue.ToPointer() = (ulong)NativeFunction.Call(nativeHash, typeof(ulong), args);
+			NativeRetVal retVal = (NativeRetVal)NativeFunction.Call(nativeHash, typeof(NativeRetVal), args);
+			*(NativeRetVal*)returnedValue = retVal;
 
 			return returnedValue;
 		}

@@ -72,7 +72,6 @@ namespace AsiSupport
 				}
 			}
 
-			VectorHelper.Init();
 			this.Loader = new AsiLoader(Path.Combine("", "AsiPlugins"));
 			this.TextureManager = new TextureManager();
 			this.KeyboardManager = new KeyboardManager();
