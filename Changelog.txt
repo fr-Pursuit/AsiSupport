@@ -1,3 +1,6 @@
+__0.3.1__
+* Improved performance
+
 __0.3.0__
 * The AsiSupport plugin has been rewritten in C# to remove the C++/CLI dependency
 * The interop with ASI scripts is now done via UnvAsiIntrf.dll (coded in pure C++)
