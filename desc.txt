@@ -1,4 +1,4 @@
-This is a RPH plugin that converts ASI mods into UASI ("Universal ASI") mods which can be loaded with RAGE Plugin Hook in the same way ASI mods are loaded with ScriptHookV. Everything but the raw DirectX access has been implemented, so most ASIs should load and work properly.
+This is a RPH plugin that converts ASI mods into UASI ("Universal ASI") mods which can be loaded with RAGE Plugin Hook in the same way ASI mods are loaded with ScriptHookV. Everything but the raw DirectX access ("Present callbacks") has been implemented, so most ASIs should load and work properly.
 
 <b>To use this plugin, you must have:</b>
 <a href="https://www.microsoft.com/en-us/download/details.aspx?id=48130">.NET Framework 4.6</a>
