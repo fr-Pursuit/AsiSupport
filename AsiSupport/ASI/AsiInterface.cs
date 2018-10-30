@@ -101,7 +101,7 @@ namespace AsiSupport.ASI
 
 		public static void FillCrashReport(StringBuilder report)
 		{
-			report.Append("Pointer to RetVal: " + ((ulong)returnedValue).ToString("X") + '\n');
+			report.Append("Pointer to RetVal: " + returnedValue.ToString("X") + '\n');
 			report.Append("Last native called: " + nativeHash.ToString("X") + '\n');
 		}
 
