@@ -1,3 +1,7 @@
+__0.3.2__
+* The plugin should no longer crash if it failed to load or convert an ASI file
+* The plugin now detects non ScriptHookV scripts instead of trying to convert them
+
 __0.3.1__
 * Improved performance
 

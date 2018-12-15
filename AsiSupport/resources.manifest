@@ -1,4 +1,3 @@
 ﻿#AsiSupport resource manifest
 
-resource:Exceptions.manifest
 resource:Versions.manifest

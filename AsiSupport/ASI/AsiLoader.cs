@@ -27,8 +27,7 @@ namespace AsiSupport.ASI
 
 		public string WorkingDir { get; private set; }
 		public bool Loading { get; private set; }
-		public List<AsiPlugin> LoadedPlugins { get; private set; }
-		private readonly ManifestFile exceptions;
+		public List<AsiPlugin> LoadedPlugins { get; } = new List<AsiPlugin>();
 		private readonly IntegrityMap integrityMap;
 
 		public AsiLoader(string workingDir)
@@ -36,8 +35,6 @@ namespace AsiSupport.ASI
 			Log.Info("Initializing AsiLoader...");
 			this.WorkingDir = Path.GetFullPath(workingDir);
 			this.Loading = false;
-			this.LoadedPlugins = new List<AsiPlugin>();
-			this.exceptions = new ManifestFile(Path.Combine(Support.Instance.DataDirectory, "Exceptions"));
 			this.integrityMap = new IntegrityMap(Path.Combine(Support.Instance.DataDirectory, "Conversions"));
 			this.integrityMap.Cleanup(this.WorkingDir);
 
@@ -99,69 +96,77 @@ namespace AsiSupport.ASI
 
 		public void LoadPlugin(AsiPlugin plugin)
 		{
-			if(this.exceptions.Entries.Contains(plugin.Name.ToLower()))
-			{
-				Log.Info("Skipping \"" + plugin.Name + "\".");
-				return;
-			}
-
 			this.Loading = true;
 			Log.Info("Loading \"" + plugin.Name + '"');
 
-			//In case ScriptHookV is present and has already loaded the ASI
-			Game.TerminateAllScriptsWithName(plugin.Name.ToLower() + ".asi");
-
-			if(plugin.Type == AsiType.NonUniversal)
+			try
 			{
-				Log.Info("Non universal ASI detected. Converting it...");
-				plugin.ConvertAsi();
-				this.integrityMap.UpdateConversionHash(plugin.Name, IOUtil.GetFileChecksum(plugin.Name + ".asi"), IOUtil.GetFileChecksum(plugin.UASIPath));
-				Log.Info("Plugin converted successfully.");
-				GameFiber.Yield();
-			}
-			else if(plugin.Type == AsiType.UniversalConverted)
-			{
-				bool outdated = false;
+				//In case ScriptHookV is present and has already loaded the ASI
+				Game.TerminateAllScriptsWithName(plugin.Name.ToLower() + ".asi");
 
-				if(this.integrityMap.HasConversionHash(plugin.Name))
-					outdated = IOUtil.GetFileChecksum(plugin.Name + ".asi") != this.integrityMap.GetAsiHash(plugin.Name) || IOUtil.GetFileChecksum(plugin.UASIPath) != this.integrityMap.GetUnivHash(plugin.Name);
-				else outdated = true;
-
-				if(outdated)
+				if(plugin.Type == AsiType.NonUniversal)
 				{
-					Log.Info("Outdated ASI detected. Converting it again...");
+					Log.Info("Non universal ASI detected. Converting it...");
 					plugin.ConvertAsi();
 					this.integrityMap.UpdateConversionHash(plugin.Name, IOUtil.GetFileChecksum(plugin.Name + ".asi"), IOUtil.GetFileChecksum(plugin.UASIPath));
 					Log.Info("Plugin converted successfully.");
+					GameFiber.Yield();
 				}
-
-				GameFiber.Yield();
-			}
-
-			this.LoadedPlugins.Add(plugin);
-			IntPtr module = LoadLibraryA(plugin.UASIPath);
-
-			if(module != IntPtr.Zero)
-			{
-				if(plugin.ScriptThreads.Count > 0)
+				else if(plugin.Type == AsiType.UniversalConverted)
 				{
-					Log.Info("Plugin \"" + plugin.Name + "\" loaded successfully.");
+					bool outdated = false;
 
-					foreach(AsiThread thread in plugin.ScriptThreads)
-						thread.Start();
+					if(this.integrityMap.HasConversionHash(plugin.Name))
+						outdated = IOUtil.GetFileChecksum(plugin.Name + ".asi") != this.integrityMap.GetAsiHash(plugin.Name) || IOUtil.GetFileChecksum(plugin.UASIPath) != this.integrityMap.GetUnivHash(plugin.Name);
+					else outdated = true;
+
+					if(outdated)
+					{
+						Log.Info("Outdated ASI detected. Converting it again...");
+						plugin.ConvertAsi();
+						this.integrityMap.UpdateConversionHash(plugin.Name, IOUtil.GetFileChecksum(plugin.Name + ".asi"), IOUtil.GetFileChecksum(plugin.UASIPath));
+						Log.Info("Plugin converted successfully.");
+					}
+
+					GameFiber.Yield();
 				}
-				else Log.Warn("Plugin \"" + plugin.Name + "\" has been loaded successfully, but didn't register any thread. Try rebooting your game to fix this issue.");
+
+				this.LoadedPlugins.Add(plugin);
+				IntPtr module = LoadLibraryA(plugin.UASIPath);
+
+				if(module != IntPtr.Zero)
+				{
+					if(plugin.ScriptThreads.Count > 0)
+					{
+						Log.Info("Plugin \"" + plugin.Name + "\" loaded successfully.");
+
+						foreach(AsiThread thread in plugin.ScriptThreads)
+							thread.Start();
+					}
+					else Log.Warn("Plugin \"" + plugin.Name + "\" has been loaded successfully, but didn't register any thread. Try rebooting your game to fix this issue.");
+				}
+				else
+				{
+					this.LoadedPlugins.Remove(plugin);
+					Log.Error("Unable to load \"" + plugin.Name + "\", try rebooting your game: " + new Win32Exception(Marshal.GetLastWin32Error()));
+				}
+
+				this.Loading = false;
+
+				if(this.integrityMap.Dirty)
+					this.integrityMap.SaveMap();
 			}
-			else
+			catch(NotScriptException)
 			{
-				this.LoadedPlugins.Remove(plugin);
-				Log.Error("Unable to load \"" + plugin.Name + "\", try rebooting your game: " + new Win32Exception(Marshal.GetLastWin32Error()));
+				Log.Info("Skipping \"" + plugin.Name + "\" as it is not a ScriptHookV script.");
 			}
+			catch(Exception e)
+			{
+				if(this.LoadedPlugins.Contains(plugin))
+					this.LoadedPlugins.Remove(plugin);
 
-			this.Loading = false;
-
-			if(this.integrityMap.Dirty)
-				this.integrityMap.SaveMap();
+				Log.Error("Unable to load \"" + plugin.Name + "\": " + e);
+			}
 		}
 
 		public AsiPlugin GetPlugin(string name)

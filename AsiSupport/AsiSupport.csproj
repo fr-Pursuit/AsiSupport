@@ -62,6 +62,7 @@
     <Compile Include="ASI\AsiType.cs" />
     <Compile Include="ASI\IntegrityMap.cs" />
     <Compile Include="ASI\AsiThread.cs" />
+    <Compile Include="ASI\NotScriptException.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConsoleCommands.cs" />
     <Compile Include="EntryPoint.cs" />

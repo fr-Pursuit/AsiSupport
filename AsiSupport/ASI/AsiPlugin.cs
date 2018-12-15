@@ -80,6 +80,9 @@ namespace AsiSupport.ASI
 								fStream.Position = pos;
 								this.JumpToRVA(fStream, reader, relocationPos, reader.ReadUInt32()); //Jump to the dll's Name
 
+								if(fStream.Position > fStream.Length) //If we jumped out of the file
+									throw new NotScriptException();
+
 								for(int i = 0; i < dllName.Length; i++)
 									dllName[i] = (char)reader.ReadByte();
 
