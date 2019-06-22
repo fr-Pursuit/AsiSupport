@@ -11,6 +11,10 @@ namespace AsiSupport
 	{
 		public bool LoadAllPluginsOnStartup { get; set; } = true;
 
+		public bool ConsiderVersionUnknown { get; set; } = false;
+
+		public bool IgnoreUnknownNatives { get; set; } = false;
+
 		public Config() : base(Support.Instance.ConfigFile, true) {}
 	}
 }

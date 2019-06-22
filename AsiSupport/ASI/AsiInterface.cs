@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using AsiSupport.Managers;
@@ -228,7 +229,16 @@ namespace AsiSupport.ASI
 
 			argumentsIndex = 0;
 
-			*(NativeRetVal*)returnedValue = (NativeRetVal)NativeFunction.Call(nativeHash, typeof(NativeRetVal), args);
+			try
+			{
+				*(NativeRetVal*) returnedValue = (NativeRetVal) NativeFunction.Call(nativeHash, typeof(NativeRetVal), args);
+			}
+			catch(Exception e)
+			{
+				if(Support.Instance.Config.IgnoreUnknownNatives)
+					*(NativeRetVal*)returnedValue = new NativeRetVal(); //== 0
+				else throw e;
+			}
 			return returnedValue;
 		}
 
@@ -326,7 +336,7 @@ namespace AsiSupport.ASI
 
 		private static int GetGameVersion()
 		{
-			return Support.Instance.GameVersion;
+			return Support.Instance.Config.ConsiderVersionUnknown ? -1 : Support.Instance.GameVersion;
 		}
 	}
 }

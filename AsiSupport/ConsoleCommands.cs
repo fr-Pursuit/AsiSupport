@@ -37,5 +37,11 @@ namespace AsiSupport
 		{
 			Support.Instance.Loader.UnloadAllPlugins();
 		}
+
+		[ConsoleCommand(Description = "Reload AsiSupport's configuration")]
+		public static void ReloadAsiConfig()
+		{
+			Support.Instance.Config = new Config();
+		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -10,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pursuit")]
 [assembly: AssemblyProduct("ASI Support")]
-[assembly: AssemblyCopyright("Copyright © Pursuit 2018")]
+[assembly: AssemblyCopyright("Copyright © Pursuit 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: Rage.Attributes.Plugin("ASI Support For RAGE Plugin Hook", Description = "Adds support for ASI plugins to RAGE Plugin Hook.", Author = "Pursuit")]
@@ -33,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.3.2")]
-[assembly: AssemblyFileVersion("0.3.2")]
+[assembly: AssemblyVersion("0.3.3")]
+[assembly: AssemblyFileVersion("0.3.3")]

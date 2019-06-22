@@ -19,7 +19,7 @@ namespace AsiSupport
 	{
 		public static Support Instance { get; private set; }
 
-		public Config Config { get; private set; }
+		public Config Config { get; set; }
 		public int GameVersion { get; private set; } = -1;
 		public AsiLoader Loader { get; private set; }
 		public TextureManager TextureManager { get; private set; }
