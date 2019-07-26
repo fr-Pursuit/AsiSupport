@@ -91,9 +91,9 @@ namespace AsiSupport.ASI
 		{
 			arguments = new ulong[MaxArgs];
 
-			argsBuffer = new NativeArgument[MaxArgs][];
-			for(int i = 0; i < MaxArgs; i++)
-				argsBuffer[i] = new NativeArgument[i+1];
+			argsBuffer = new NativeArgument[MaxArgs+1][];
+			for(int i = 0; i < MaxArgs+1; i++)
+				argsBuffer[i] = new NativeArgument[i];
 
 			returnedValue = Marshal.AllocHGlobal(sizeof(NativeRetVal));
 
