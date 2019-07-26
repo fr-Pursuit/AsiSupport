@@ -114,7 +114,7 @@ namespace AsiSupport.ASI
 				}
 				else if(plugin.Type == AsiType.UniversalConverted)
 				{
-					bool outdated = false;
+					bool outdated;
 
 					if(this.integrityMap.HasConversionHash(plugin.Name))
 						outdated = IOUtil.GetFileChecksum(plugin.Name + ".asi") != this.integrityMap.GetAsiHash(plugin.Name) || IOUtil.GetFileChecksum(plugin.UASIPath) != this.integrityMap.GetUnivHash(plugin.Name);

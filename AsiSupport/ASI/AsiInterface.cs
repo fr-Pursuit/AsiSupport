@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -11,6 +12,8 @@ namespace AsiSupport.ASI
 {
 	public static unsafe class AsiInterface
 	{
+		private const int MaxArgs = 32;
+
 		[DllImport("UnvAsiIntrf.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int RegisterHandler(IntPtr argCreateTexture, IntPtr argDrawTexture, IntPtr argPresentCallbackRegister, IntPtr argPresentCallbackUnregister, IntPtr argKeyboardHandlerRegister, IntPtr argKeyboardHandlerUnregister, IntPtr argScriptWait, IntPtr argScriptRegister, IntPtr argScriptRegisterAdditionalThread, IntPtr argScriptUnregisterByModule, IntPtr argScriptUnregisterByMain, IntPtr argNativeInit, IntPtr argNativePush64, IntPtr argNativeCall, IntPtr argGetGlobalPtr, IntPtr argWorldGetAllVehicles, IntPtr argWorldGetAllPeds, IntPtr argWorldGetAllObjects, IntPtr argWorldGetAllPickups, IntPtr argGetScriptHandleBaseAddress, IntPtr argGetGameVersion);
 
@@ -59,14 +62,39 @@ namespace AsiSupport.ASI
 		private static GetScriptHandleBaseAddressDelegate getScriptHandleBaseAddress = GetScriptHandleBaseAddress;
 		private static GetGameVersionDelegate getGameVersion = GetGameVersion;
 
+		/// <summary>
+		/// The hash of the native we're working on
+		/// </summary>
 		private static ulong nativeHash;
+
+		/// <summary>
+		/// The arguments that will be passed to the native
+		/// </summary>
 		private static ulong[] arguments;
+
+		/// <summary>
+		/// The number of arguments already pushed
+		/// </summary>
 		private static int argumentsIndex = 0;
+
+		/// <summary>
+		/// A buffer to store all argument arrays passed to RPH.
+		/// </summary>
+		private static NativeArgument[][] argsBuffer;
+
+		/// <summary>
+		/// A pointer to the value returned by the last native called
+		/// </summary>
 		private static IntPtr returnedValue = IntPtr.Zero;
 
 		public static void Initialize()
 		{
-			arguments = new ulong[25];
+			arguments = new ulong[MaxArgs];
+
+			argsBuffer = new NativeArgument[MaxArgs][];
+			for(int i = 0; i < MaxArgs; i++)
+				argsBuffer[i] = new NativeArgument[i+1];
+
 			returnedValue = Marshal.AllocHGlobal(sizeof(NativeRetVal));
 
 			RegisterHandler(Marshal.GetFunctionPointerForDelegate(createTexture),
@@ -222,7 +250,8 @@ namespace AsiSupport.ASI
 			if(returnedValue == IntPtr.Zero)
 				throw new Exception("AsiInterface is not initialized.");
 
-			NativeArgument[] args = new NativeArgument[argumentsIndex];
+			//TODO Verify performance gain
+			NativeArgument[] args = argsBuffer[argumentsIndex];
 
 			for(int i = 0; i < argumentsIndex; i++)
 				args[i] = new NativeArgument(arguments[i]);

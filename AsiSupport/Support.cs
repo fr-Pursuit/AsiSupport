@@ -82,6 +82,11 @@ namespace AsiSupport
 			if(this.Config.LoadAllPluginsOnStartup)
 				this.Loader.LoadAllPlugins();
 
+			if(this.Config.EnableSHVDNSupport)
+				SHVDN.Init();
+
+			Log.Info("All scripts are loaded. Fading screen back in...");
+
 			Game.FadeScreenIn(1000);
 			this.initialized = true;
 		}
@@ -111,6 +116,12 @@ namespace AsiSupport
 		public override void Unload(bool canSleep)
 		{
 			this.Loader?.UnloadAllPlugins();
+
+			if(SHVDN.IsActive)
+			{
+				Log.Info("Disposing SHVDN support...");
+				SHVDN.Dispose();
+			}
 
 			Log.Info("Disposing KeyboardManager...");
 			this.KeyboardManager?.ReleaseHandle();

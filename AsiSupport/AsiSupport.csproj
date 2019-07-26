@@ -70,11 +70,12 @@
     <Compile Include="NativeRetVal.cs" />
     <Compile Include="PickupLister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SHVDN.cs" />
     <Compile Include="Support.cs" />
     <Compile Include="Managers\TextureManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App.meta" />
+    <EmbeddedResource Include="app.meta" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="resources.manifest" />

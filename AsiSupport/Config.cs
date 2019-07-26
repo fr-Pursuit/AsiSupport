@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PursuitLib.IO;
+﻿using PursuitLib.IO;
 
 namespace AsiSupport
 {
@@ -14,6 +9,8 @@ namespace AsiSupport
 		public bool ConsiderVersionUnknown { get; set; } = false;
 
 		public bool IgnoreUnknownNatives { get; set; } = false;
+
+		public bool EnableSHVDNSupport { get; set; } = true; //TODO: false by default?
 
 		public Config() : base(Support.Instance.ConfigFile, true) {}
 	}
