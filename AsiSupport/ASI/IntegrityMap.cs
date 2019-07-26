@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PursuitLib.IO;
+using PursuitLib.IO.Serialization;
 
 namespace AsiSupport.ASI
 {

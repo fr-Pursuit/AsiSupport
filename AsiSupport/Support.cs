@@ -55,7 +55,7 @@ namespace AsiSupport
 			if(this.IsStopped)
 				return;
 
-			ManifestFile gameVersions = new ManifestFile(Path.Combine(this.DataDirectory, "Versions"));
+			ManifestFile gameVersions = new ManifestFile(Path.Combine(this.DataDirectory, "Versions.manifest"));
 			string versionStr = Game.ProductVersion.ToString();
 			bool isSteamVer = File.Exists("steam_api64.dll");
 

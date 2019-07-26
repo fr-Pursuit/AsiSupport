@@ -8,9 +8,9 @@ namespace AsiSupport
 
 		public bool ConsiderVersionUnknown { get; set; } = false;
 
-		public bool IgnoreUnknownNatives { get; set; } = false;
+		public bool IgnoreUnknownNatives { get; set; } = true;
 
-		public bool EnableSHVDNSupport { get; set; } = true; //TODO: false by default?
+		public bool EnableSHVDNSupport { get; set; } = true;
 
 		public Config() : base(Support.Instance.ConfigFile, true) {}
 	}

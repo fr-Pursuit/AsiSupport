@@ -27,6 +27,7 @@ namespace AsiSupport.ASI
 
 		public string WorkingDir { get; private set; }
 		public bool Loading { get; private set; }
+		public List<string> Blacklist { get; }
 		public List<AsiPlugin> LoadedPlugins { get; } = new List<AsiPlugin>();
 		private readonly IntegrityMap integrityMap;
 
@@ -35,7 +36,8 @@ namespace AsiSupport.ASI
 			Log.Info("Initializing AsiLoader...");
 			this.WorkingDir = Path.GetFullPath(workingDir);
 			this.Loading = false;
-			this.integrityMap = new IntegrityMap(Path.Combine(Support.Instance.DataDirectory, "Conversions"));
+			this.Blacklist = new ManifestFile(Path.Combine(Support.Instance.DataDirectory, "AsiBlacklist.manifest")).Entries;
+			this.integrityMap = new IntegrityMap(Path.Combine(Support.Instance.DataDirectory, "Conversions.xml"));
 			this.integrityMap.Cleanup(this.WorkingDir);
 
 			if(!Directory.Exists(this.WorkingDir))
@@ -50,7 +52,7 @@ namespace AsiSupport.ASI
 			{
 				string name = Path.GetFileNameWithoutExtension(file);
 
-				if(!this.IsLoaded(name))
+				if(!this.Blacklist.Contains(name.ToLower()) && !this.IsLoaded(name))
 				{
 					LoadPlugin(new AsiPlugin(name));
 					GameFiber.Yield();

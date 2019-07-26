@@ -250,7 +250,6 @@ namespace AsiSupport.ASI
 			if(returnedValue == IntPtr.Zero)
 				throw new Exception("AsiInterface is not initialized.");
 
-			//TODO Verify performance gain
 			NativeArgument[] args = argsBuffer[argumentsIndex];
 
 			for(int i = 0; i < argumentsIndex; i++)

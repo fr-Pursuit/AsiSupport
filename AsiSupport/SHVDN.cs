@@ -12,16 +12,16 @@ namespace AsiSupport
 	/// Adapted from ScriptHookVDotNet's code
 	/// https://github.com/crosire/scripthookvdotnet/blob/853982b99c2ef33b44cf702277a3a05e0087d149/LoaderMain.cpp
 	/// </summary>
-	public static class SHVDN //TODO: Patch ScriptHookVDotNet.dll (references to ScriptHookV.dll)
+	public static class SHVDN
 	{
 		private delegate void KeyboardMethodDelegate(Keys key, bool status, bool statusCtrl, bool statusShift, bool statusAlt);
 
 		public static bool IsActive => fiber != null && fiber.IsAlive;
 
 		private static GameFiber fiber;
-		private static List<Func<bool>> initMethods;
-		private static List<Action> tickMethods;
-		private static List<KeyboardMethodDelegate> keyboardMethods;
+		private static List<Func<bool>> initMethods = new List<Func<bool>>();
+		private static List<Action> tickMethods = new List<Action>();
+		private static List<KeyboardMethodDelegate> keyboardMethods = new List<KeyboardMethodDelegate>();
 
 		public static void Init()
 		{
@@ -32,20 +32,19 @@ namespace AsiSupport
 			tickMethods.Clear();
 			keyboardMethods.Clear();
 
-			string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-			foreach(string filename in Directory.EnumerateFiles(directory, "ScriptHookVDotNet*.dll"))
+			foreach(string filename in Directory.EnumerateFiles(Support.Instance.WorkingDirectory, "ScriptHookVDotNet-univ*.dll"))
 			{
+				Log.Info("File: " + filename);
+
 				Assembly assembly;
 
 				try
 				{
-					string path = Path.Combine(directory, filename);
-
 					// Unblock file if it was downloaded from a network location
-					File.Delete(path + ":Zone.Identifier");
+					if(File.Exists(filename + ":Zone.Identifier"))
+						File.Delete(filename + ":Zone.Identifier");
 
-					assembly = Assembly.LoadFrom(path);
+					assembly = Assembly.LoadFrom(filename);
 				}
 				catch(Exception ex)
 				{

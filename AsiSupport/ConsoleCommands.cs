@@ -26,6 +26,15 @@ namespace AsiSupport
 			Support.Instance.Loader.UnloadPlugin(name);
 		}
 
+		[ConsoleCommand(Description = "Reload a specific ASI Plugin")]
+		public static void ReloadAsiPlugin([ConsoleCommandParameter(Description = "The plugin's name")] string name)
+		{
+			if(Support.Instance.Loader.IsLoaded(name))
+				Support.Instance.Loader.UnloadPlugin(name);
+
+			Support.Instance.Loader.LoadPlugin(name);
+		}
+
 		[ConsoleCommand(Description = "Load all existing ASI plugins")]
 		public static void LoadAllAsiPlugins()
 		{
@@ -38,9 +47,17 @@ namespace AsiSupport
 			Support.Instance.Loader.UnloadAllPlugins();
 		}
 
+		[ConsoleCommand(Description = "Reload all existing ASI plugins")]
+		public static void ReloadAllAsiPlugins()
+		{
+			Support.Instance.Loader.UnloadAllPlugins();
+			Support.Instance.Loader.LoadAllPlugins();
+		}
+
 		[ConsoleCommand(Description = "Reload AsiSupport's configuration")]
 		public static void ReloadAsiConfig()
 		{
+			Log.Info("Reloading AsiSupport's configuration...");
 			Support.Instance.Config = new Config();
 		}
 	}

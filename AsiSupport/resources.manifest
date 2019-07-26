@@ -1,3 +1,4 @@
 ﻿#AsiSupport resource manifest
 
 resource:Versions.manifest
+resource:AsiBlacklist.manifest
