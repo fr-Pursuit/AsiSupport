@@ -1,3 +1,8 @@
+__0.4.1__
+* SHVDN support is now disabled by default (because of its instability)
+* The versions manifest has been updated (up to version 1.0.1868.1)
+* Process corrupted state exceptions (ie: AccessViolations) are now properly handled.
+
 __0.4.0__
 * The maximum number of native arguments has been increased from 25 to 32
 * All argument buffers are now pre-allocated: this should improve the plugin's overall performance

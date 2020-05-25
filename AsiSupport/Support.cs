@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using AsiSupport.ASI;
+﻿using AsiSupport.ASI;
 using AsiSupport.Managers;
 using PursuitLib;
 using PursuitLib.Extensions;
 using PursuitLib.IO;
 using PursuitLib.RPH;
 using Rage;
+using System;
+using System.IO;
+using System.Text;
 
 namespace AsiSupport
 {
@@ -38,10 +34,10 @@ namespace AsiSupport
 		protected override void Tick()
 		{
 			if(!Game.IsLoading && !this.initialized) //Do not load plugins while the game is loading, it will cause a crash
-				this.Initialize();
+				this.InitSupport();
 		}
 
-		private void Initialize()
+		private void InitSupport()
 		{
 			Game.FadeScreenOut(0);
 			GameFiber.Wait(1000);

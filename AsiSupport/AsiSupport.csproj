@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AsiSupport</RootNamespace>
     <AssemblyName>AsiSupport</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,11 +35,16 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PursuitLib">
-      <HintPath>..\..\..\..\Libraries\PursuitLib\Windows\bin\Release\PursuitLib.dll</HintPath>
+    <Reference Include="PursuitLib, Version=0.10.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Libraries\PursuitLib\PursuitLib\bin\Release\PursuitLib.dll</HintPath>
     </Reference>
-    <Reference Include="PursuitLib.RPH">
-      <HintPath>..\..\..\..\Libraries\PursuitLib\RPH\bin\Release\PursuitLib.RPH.dll</HintPath>
+    <Reference Include="PursuitLib.RPH, Version=0.1.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Libraries\PursuitLib\PursuitLib.RPH\bin\Release\PursuitLib.RPH.dll</HintPath>
+    </Reference>
+    <Reference Include="PursuitLib.Windows">
+      <HintPath>..\..\..\..\Libraries\PursuitLib\PursuitLib.Windows\bin\Release\PursuitLib.Windows.dll</HintPath>
     </Reference>
     <Reference Include="RagePluginHookSDK">
       <HintPath>..\..\..\..\Libraries\RagePluginHook\RagePluginHookSDK.dll</HintPath>

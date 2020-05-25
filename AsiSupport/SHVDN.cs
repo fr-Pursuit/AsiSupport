@@ -34,8 +34,6 @@ namespace AsiSupport
 
 			foreach(string filename in Directory.EnumerateFiles(Support.Instance.WorkingDirectory, "ScriptHookVDotNet-univ*.dll"))
 			{
-				Log.Info("File: " + filename);
-
 				Assembly assembly;
 
 				try

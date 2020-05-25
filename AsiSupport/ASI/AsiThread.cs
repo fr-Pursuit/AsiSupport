@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ namespace AsiSupport.ASI
 			else Log.Error("Unable to start AsiThread \"" + this.Name + "\": no function specified.");
 		}
 
+		[HandleProcessCorruptedStateExceptions]
 		private void RunFiber()
 		{
 			Log.Info("Starting new GameFiber: \"" + this.Name + '"');

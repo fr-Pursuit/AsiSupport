@@ -38,7 +38,7 @@ IV) Credits
 V) License
 	
 	ASI Support for RAGE Plugin Hook
-	Copyright © 2018 Pursuit
+	Copyright © 2019 Pursuit
 	
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
