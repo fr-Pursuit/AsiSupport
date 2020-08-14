@@ -1,14 +1,12 @@
-﻿using System;
+﻿using PursuitLib;
+using PursuitLib.IO;
+using Rage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using PursuitLib;
-using PursuitLib.IO;
-using Rage;
 
 namespace AsiSupport.ASI
 {
@@ -124,7 +122,7 @@ namespace AsiSupport.ASI
 
 					if(outdated)
 					{
-						Log.Info("Outdated ASI detected. Converting it again...");
+						Log.Info("New version of ASI detected. Converting it again...");
 						plugin.ConvertAsi();
 						this.integrityMap.UpdateConversionHash(plugin.Name, IOUtil.GetFileChecksum(plugin.Name + ".asi"), IOUtil.GetFileChecksum(plugin.UASIPath));
 						Log.Info("Plugin converted successfully.");
@@ -134,6 +132,7 @@ namespace AsiSupport.ASI
 				}
 
 				this.LoadedPlugins.Add(plugin);
+
 				IntPtr module = LoadLibraryA(plugin.UASIPath);
 
 				if(module != IntPtr.Zero)

@@ -8,6 +8,7 @@ using Rage;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace AsiSupport
 {
@@ -78,8 +79,8 @@ namespace AsiSupport
 			if(this.Config.LoadAllPluginsOnStartup)
 				this.Loader.LoadAllPlugins();
 
-			if(this.Config.EnableSHVDNSupport)
-				SHVDN.Init();
+			//if(this.Config.EnableSHVDNSupport)
+			//	SHVDN.Init();
 
 			Log.Info("All scripts are loaded. Fading screen back in...");
 
@@ -112,12 +113,6 @@ namespace AsiSupport
 		public override void Unload(bool canSleep)
 		{
 			this.Loader?.UnloadAllPlugins();
-
-			if(SHVDN.IsActive)
-			{
-				Log.Info("Disposing SHVDN support...");
-				SHVDN.Dispose();
-			}
 
 			Log.Info("Disposing KeyboardManager...");
 			this.KeyboardManager?.ReleaseHandle();

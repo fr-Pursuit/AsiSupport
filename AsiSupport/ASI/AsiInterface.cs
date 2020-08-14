@@ -267,6 +267,7 @@ namespace AsiSupport.ASI
 					*(NativeRetVal*)returnedValue = new NativeRetVal(); //== 0
 				else throw e;
 			}
+
 			return returnedValue;
 		}
 

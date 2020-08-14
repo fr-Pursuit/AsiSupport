@@ -1,3 +1,8 @@
+__0.4.2__
+* The versions manifest has been updated (up to version 1.0.2060.0)
+* Thread crashes can now be notified to the player
+- SHVDN support has been removed as it is obsolete. A new support might be added in the future.
+
 __0.4.1__
 * SHVDN support is now disabled by default (because of its instability)
 * The versions manifest has been updated (up to version 1.0.1868.1)

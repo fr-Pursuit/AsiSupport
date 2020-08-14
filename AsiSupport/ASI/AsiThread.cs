@@ -49,7 +49,12 @@ namespace AsiSupport.ASI
 			catch(Exception e)
 			{
 				if(!(e is ThreadAbortException)) //Thrown when unloading the plugin manually
+				{
 					Log.Error("GameFiber \"" + this.Name + "\" has crashed: " + e);
+
+					if(Support.Instance.Config.NotifyFiberCrash)
+						Game.DisplayNotification("GameFiber \"" + this.Name + "\" has crashed: " + e);
+				}
 			}
 		}
 	}
