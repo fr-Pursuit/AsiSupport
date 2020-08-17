@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rage;
 
 namespace AsiSupport.Managers
 {
@@ -11,14 +8,11 @@ namespace AsiSupport.Managers
 	{
 		private Dictionary<int, Texture> textures;
 		private int idCount;
-		private List<DrawCall> calls;
 
 		public TextureManager()
 		{
 			this.textures = new Dictionary<int, Texture>();
 			this.idCount = 0;
-			this.calls = new List<DrawCall>();
-			Game.RawFrameRender += this.Draw;
 		}
 
 		public int CreateTexture(string fileName)
@@ -31,36 +25,11 @@ namespace AsiSupport.Managers
 
 		public void DrawTexture(int id, int time, float x, float y, float width, float height, float rotation, float rotationCenterX, float rotationCenterY)
 		{
-			this.calls.Add(new DrawCall(id, time, x, y, width, height, rotation, rotationCenterX, rotationCenterY));
+			TextureDrawer drawer = new TextureDrawer(id, time, x, y, width, height, rotation, rotationCenterX, rotationCenterY);
+			Game.RawFrameRender += drawer.Draw;
 		}
 
-		public void Draw(object sender, GraphicsEventArgs args)
-		{
-			for(int i = 0; i < this.calls.Count; i++)
-			{
-				DrawCall call = calls[i];
-
-				if(Environment.TickCount <= call.ValidUntil)
-				{
-					Vector2 position = this.Scale(call.RenderX, call.RenderY);
-					Vector2 size = this.Scale(call.Width, call.Height);
-					Vector2 rotationCenter = new Vector2(position.X + (size.X * call.RotationCenterX), position.Y + (size.Y * call.RotationCenterY));
-					args.Graphics.DrawTexture(this.textures[call.TextureId], position, size, 0.0f, 0.0f, 1.0f, 1.0f, call.Rotation, rotationCenter);
-				}
-				else
-				{
-					calls.Remove(call);
-					i--;
-				}
-			}
-		}
-
-		private Vector2 Scale(float x, float y)
-		{
-			return new Vector2(x * Game.Resolution.Width, y * Game.Resolution.Height);
-		}
-
-		private class DrawCall
+		private struct TextureDrawer
 		{
 			public int ValidUntil { get; private set; }
 			public int TextureId { get; private set; }
@@ -72,7 +41,7 @@ namespace AsiSupport.Managers
 			public float RotationCenterX { get; private set; }
 			public float RotationCenterY { get; private set; }
 
-			public DrawCall(int id, int time, float x, float y, float width, float height, float rotation, float rotationCenterX, float rotationCenterY)
+			public TextureDrawer(int id, int time, float x, float y, float width, float height, float rotation, float rotationCenterX, float rotationCenterY)
 			{
 				this.ValidUntil = Environment.TickCount + time;
 				this.TextureId = id;
@@ -83,6 +52,26 @@ namespace AsiSupport.Managers
 				this.Rotation = rotation;
 				this.RotationCenterX = rotationCenterX;
 				this.RotationCenterY = rotationCenterY;
+			}
+
+			public void Draw(object sender, GraphicsEventArgs args)
+			{
+				if(Environment.TickCount <= this.ValidUntil)
+				{
+					Vector2 position = this.Scale(this.RenderX, this.RenderY);
+					Vector2 size = this.Scale(this.Width, this.Height);
+					Vector2 rotationCenter = new Vector2(position.X + (size.X * this.RotationCenterX), position.Y + (size.Y * this.RotationCenterY));
+					args.Graphics.DrawTexture(Support.Instance.TextureManager.textures[this.TextureId], position, size, 0.0f, 0.0f, 1.0f, 1.0f, this.Rotation, rotationCenter);
+				}
+				else
+				{
+					Game.RawFrameRender -= Draw;
+				}
+			}
+
+			private Vector2 Scale(float x, float y)
+			{
+				return new Vector2(x * Game.Resolution.Width, y * Game.Resolution.Height);
 			}
 		}
 	}

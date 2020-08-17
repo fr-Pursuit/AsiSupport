@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using AsiSupport.Managers;
+﻿using AsiSupport.Managers;
 using PursuitLib;
 using Rage;
 using Rage.Native;
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace AsiSupport.ASI
 {
@@ -63,7 +61,7 @@ namespace AsiSupport.ASI
 		private static GetGameVersionDelegate getGameVersion = GetGameVersion;
 
 		/// <summary>
-		/// The hash of the native we're working on
+		/// The hash of the native that's about to be called
 		/// </summary>
 		private static ulong nativeHash;
 
@@ -85,14 +83,14 @@ namespace AsiSupport.ASI
 		/// <summary>
 		/// A pointer to the value returned by the last native called
 		/// </summary>
-		private static IntPtr returnedValue = IntPtr.Zero;
+		private static IntPtr returnedValue;
 
 		public static void Initialize()
 		{
 			arguments = new ulong[MaxArgs];
 
-			argsBuffer = new NativeArgument[MaxArgs+1][];
-			for(int i = 0; i < MaxArgs+1; i++)
+			argsBuffer = new NativeArgument[MaxArgs + 1][];
+			for(int i = 0; i < MaxArgs + 1; i++)
 				argsBuffer[i] = new NativeArgument[i];
 
 			returnedValue = Marshal.AllocHGlobal(sizeof(NativeRetVal));
@@ -123,9 +121,10 @@ namespace AsiSupport.ASI
 		public static void Dispose()
 		{
 			if(returnedValue != IntPtr.Zero)
+			{
 				Marshal.FreeHGlobal(returnedValue);
-
-			returnedValue = IntPtr.Zero;
+				returnedValue = IntPtr.Zero;
+			}
 		}
 
 		public static void FillCrashReport(StringBuilder report)
@@ -248,7 +247,7 @@ namespace AsiSupport.ASI
 		private static IntPtr NativeCall()
 		{
 			if(returnedValue == IntPtr.Zero)
-				throw new Exception("AsiInterface is not initialized.");
+				throw new Exception("RPHNativeInvoker is not initialized.");
 
 			NativeArgument[] args = argsBuffer[argumentsIndex];
 
@@ -259,13 +258,13 @@ namespace AsiSupport.ASI
 
 			try
 			{
-				*(NativeRetVal*) returnedValue = (NativeRetVal) NativeFunction.Call(nativeHash, typeof(NativeRetVal), args);
+				*(NativeRetVal*)returnedValue = NativeFunction.CallByHash<NativeRetVal>(nativeHash, args);
 			}
-			catch(Exception e)
+			catch(Exception)
 			{
 				if(Support.Instance.Config.IgnoreUnknownNatives)
 					*(NativeRetVal*)returnedValue = new NativeRetVal(); //== 0
-				else throw e;
+				else throw;
 			}
 
 			return returnedValue;
