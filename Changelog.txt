@@ -1,3 +1,6 @@
+__0.4.3__
+* The versions manifest has been updated (up to version 1.0.2189.0)
+
 __0.4.2__
 * The versions manifest has been updated (up to version 1.0.2060.0)
 * Thread crashes can now be notified to the player
