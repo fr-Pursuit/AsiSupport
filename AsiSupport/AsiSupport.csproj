@@ -47,8 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Libraries\PursuitLib\PursuitLib.Windows\bin\Release\PursuitLib.Windows.dll</HintPath>
     </Reference>
-    <Reference Include="RagePluginHookSDK">
-      <HintPath>..\..\..\..\Libraries\RagePluginHook\RagePluginHookSDK.dll</HintPath>
+    <Reference Include="RagePluginHookSDK, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Libraries\RAGEPluginHook\RagePluginHookSDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
