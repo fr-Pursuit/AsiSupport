@@ -1,3 +1,6 @@
+__0.4.6__
+* Fixed a crash that could occur when trying to draw an invalid texture
+
 __0.4.5__
 * The versions manifest has been updated (up to version 1.0.2245.0)
 
